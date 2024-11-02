@@ -10,8 +10,8 @@ yum update -y
 
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
-swapoff -a
-sed -i '/ swap / s/^/#/' /etc/fstab
+sudo swapoff -a
+sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
 # Install k3s with Local Path Provisioner for Persistent Volumes
 echo "Installing k3s..."
@@ -20,7 +20,7 @@ curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --disable tra
 # Wait for k3s to start
 echo "Waiting for k3s to start..."
 for i in {1..30}; do
-    if kubectl get nodes &> /dev/null; then
+    if sudo systemctl is-active --quiet k3s; then
         echo "k3s is up and running!"
         break
     fi
@@ -29,7 +29,7 @@ for i in {1..30}; do
 done
 
 # Check if k3s started successfully
-if ! kubectl get nodes &> /dev/null; then
+if ! sudo systemctl is-active --quiet k3s; then
     echo "k3s failed to start. Exiting..."
     exit 1
 fi

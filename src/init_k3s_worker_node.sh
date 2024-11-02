@@ -8,8 +8,8 @@ yum update -y
 
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
-swapoff -a
-sed -i '/ swap / s/^/#/' /etc/fstab
+sudo swapoff -a
+sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
 # Fetch the k3s node token from the server node
 echo "Fetching the k3s node token from the server..."
