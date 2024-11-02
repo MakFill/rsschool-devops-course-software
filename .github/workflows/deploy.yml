@@ -1,0 +1,61 @@
+name: CI Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      server_instance_ip:
+        description: 'IP address of the k3s server EC2 instance'
+        required: true
+        type: string
+      worker_instance_ip:
+        description: 'IP address of the k3s worker node EC2 instance'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_ARN: ${{ secrets.AWS_ARN }}
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  SERVER_INSTANCE_IP: ${{ github.event.inputs.server_instance_ip }}
+  WORKER_INSTANCE_IP: ${{ github.event.inputs.worker_instance_ip }}
+
+jobs:
+  init:
+    name: Init k3s server and worker node
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: src
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ARN }}:role/AwsAssumeTFPolicy
+          aws-region: eu-west-1
+
+      - name: Create SSH key file
+        run: echo "${{ env.EC2_SSH_KEY }}" > ec2-key.pem
+
+      - name: Set SSH key permissions
+        run: chmod 600 ec2-key.pem
+
+      - name: Init k3s server
+        run: chmod +x init_k3s_server.sh && init_k3s_server.sh
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+
+      - name: Init k3s worker node
+        run: chmod +x init_k3s_worker_node.sh && init_k3s_worker_node.sh
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          WORKER_INSTANCE_IP: ${{ env.WORKER_INSTANCE_IP }}
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
