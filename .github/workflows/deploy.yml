@@ -48,13 +48,13 @@ jobs:
         run: chmod 600 ec2-key.pem
 
       - name: Init k3s server
-        run: chmod +x init_k3s_server.sh && init_k3s_server.sh
+        run: chmod +x ./init_k3s_server.sh && ./init_k3s_server.sh
         env:
           SSH_KEY_PATH: ec2-key.pem
           SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
 
       - name: Init k3s worker node
-        run: chmod +x init_k3s_worker_node.sh && init_k3s_worker_node.sh
+        run: chmod +x ./init_k3s_worker_node.sh && ./init_k3s_worker_node.sh
         env:
           SSH_KEY_PATH: ec2-key.pem
           WORKER_INSTANCE_IP: ${{ env.WORKER_INSTANCE_IP }}
