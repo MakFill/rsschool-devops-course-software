@@ -2,8 +2,6 @@
 
 ssh -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
 
-curl -sfL https://get.k3s.io | sh -
-
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
 sudo swapoff -a
