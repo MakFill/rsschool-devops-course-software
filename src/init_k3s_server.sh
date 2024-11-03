@@ -56,7 +56,7 @@ kubectl apply -f yml_configs/pvc.yml
 
 echo "Wait until PVC is bound..."
 while true; do
-    PVC_STATUS=$(kubectl get pvc jenkins-pvc -n default -o jsonpath='{.status.phase}')
+    PVC_STATUS=$(kubectl get pvc jenkins-pvc -n jenkins -o jsonpath='{.status.phase}')
     echo "PVC status: $PVC_STATUS"
     if [ "$PVC_STATUS" == "Bound" ]; then    
         echo "PVC is bound."
