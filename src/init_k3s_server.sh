@@ -4,10 +4,6 @@ ssh -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
 
 curl -sfL https://get.k3s.io | sh -
 
-# Update system packages
-echo "Updating system packages..."
-yum update -y
-
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
 sudo swapoff -a
@@ -34,24 +30,13 @@ if ! sudo systemctl is-active --quiet k3s; then
     exit 1
 fi
 
-# Get the node token for joining
-NODE_TOKEN=$(cat /var/lib/rancher/k3s/server/node-token)
-echo "Node token for joining worker nodes: ${NODE_TOKEN}"
-
-# Save the node token to a file for later retrieval
-echo ${NODE_TOKEN} > /tmp/k3s_node_token.txt
-
-# Deploy Local Path Provisioner
-echo "Deploying Local Path Provisioner..."
-kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-provisioner.yaml
-
-# Create a Persistent Volume (PV)
-echo "Creating a Persistent Volume..."
-kubectl apply -f volume_config/pv.yml
-
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
-kubectl apply -f volume_config/pvc.yml
+kubectl create -f volume_config/pvc.yml
+
+# Create a pod
+echo "Creating a pod..."
+kubectl create -f volume_config/pod.yml
 
 # Show k3s cluster information
 echo "Cluster Information:"
