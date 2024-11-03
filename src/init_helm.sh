@@ -25,8 +25,7 @@ if ! helm version; then
 fi
 
 # Add the Bitnami Helm repository
-helm repo add bitnami
-https://charts.bitnami.com/bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 # Install Bitnami chart
