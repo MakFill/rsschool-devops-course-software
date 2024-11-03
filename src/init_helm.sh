@@ -24,6 +24,11 @@ if ! helm version; then
     exit 1
 fi
 
+# Add the Bitnami Helm repository
+helm repo add bitnami
+https://charts.bitnami.com/bitnami
+helm repo update
+
 # Install Bitnami chart
 helm install my-release oci://registry-1.docker.i/bitnamicharts/nginx
 
