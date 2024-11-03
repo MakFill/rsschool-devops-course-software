@@ -15,22 +15,6 @@ kubectl create namespace jenkins
 echo "Creating a Persistent Volume..."
 kubectl apply -f yml_configs/jenkins_volume.yml
 
-echo "Wait until PV is bound..."
-while true; do
-    PV_STATUS=$(kubectl get pv jenkins-pv -n jenkins -o jsonpath='{.status.phase}')
-    echo "PV status: $PV_STATUS"
-    if [ "$PV_STATUS" == "Bound" ]; then    
-        echo "PVC is bound."
-    break
-    elif [ "$PV_STATUS" == "Pending" ]; then
-        echo "PVC is still pending, waiting..."
-        sleep 5
-    else 
-        echo "PVC is in an unexpected state: $PV_STATUS"
-        exit 1
-    fi
-done
-
 kubectl get pv
 kubectl get storageclass
 
