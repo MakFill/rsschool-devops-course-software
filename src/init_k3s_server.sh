@@ -51,6 +51,23 @@ fi
 echo "Creating a Persistent Volume Claim..."
 kubectl create -f volume_config/pvc.yml
 
+echo "Wait until PVC is bound..."
+while true; do
+    PVC_STATUS=$(kubectl get pvc local-path-pvc -n default -o jsonpath='{.status.phase}')
+    echo "PVC status: $PVC_STATUS"
+    if [ "$PVC_STATUS" == "Bound" ]; then    
+        echo "PVC is bound."
+    break
+    elif [ "$PVC_STATUS" == "Pending" ]; then
+        echo "PVC is still pending, waiting..."
+        sleep 5
+    else 
+        echo "PVC is in an unexpected state: $PVC_STATUS"
+        exit 1
+    fi
+done
+
+
 # Create a pod
 echo "Creating a pod..."
 kubectl create -f volume_config/pod.yml
