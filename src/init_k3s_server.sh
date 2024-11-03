@@ -1,7 +1,6 @@
 #!/bin/bash
 
-ssh-keyscan -H "$SERVER_INSTANCE_IP" >> ~/.ssh/known_hosts
-ssh -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
+ssh -o StrictHostKeyChecking=no -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
 
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
