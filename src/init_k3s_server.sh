@@ -53,7 +53,7 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/depl
 
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
-kubectl create -f volume_config/pvc.yml
+kubectl create -f yml_configs/pvc.yml
 
 echo "Wait until PVC is bound..."
 while true; do
@@ -74,7 +74,7 @@ done
 
 # Create a pod
 echo "Creating a pod..."
-kubectl create -f volume_config/pod.yml
+kubectl create -f yml_configs/pod.yml
 
 # Show k3s cluster information
 echo "Cluster Information:"

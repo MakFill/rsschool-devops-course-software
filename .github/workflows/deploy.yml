@@ -46,3 +46,9 @@ jobs:
         env:
           SSH_KEY_PATH: ec2-key.pem
           SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+
+      - name: Install Jenkins
+        run: chmod +x ./init_jenkins.sh && ./init_jenkins.sh
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
