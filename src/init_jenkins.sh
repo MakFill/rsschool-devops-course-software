@@ -26,7 +26,5 @@ jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
 echo "Admin user password: $(echo $secret | base64 --decode)"
 
-echo "Get pods: $(kubectl get pods -n jenkins -w)"
-
 # Set up port forwarding
 kubectl -n jenkins port-forward svc/jenkins 8080:8080
