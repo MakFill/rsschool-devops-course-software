@@ -185,7 +185,7 @@ controller:
   # Set runAsUser to 1000 to let Jenkins run as non-root user 'jenkins', which exists in 'jenkins/jenkins' docker image.
   # When configuring runAsUser to a different value than 0 also set fsGroup to the same value:
   # -- Deprecated in favor of `controller.podSecurityContextOverride`. uid that jenkins runs with.
-  runAsUser: 1000
+  runAsUser: 0
 
   # -- Deprecated in favor of `controller.podSecurityContextOverride`. uid that will be used for persistent volume.
   fsGroup: 1000
@@ -543,18 +543,11 @@ controller:
     configMapAnnotations: {}
 
   # -- Custom init-container specification in raw-yaml format
-  customInitContainers:
-    - name: init-setup
-      image: 'alpine:3'
-      command:
-        [
-          '/bin/sh',
-          '-c',
-          "echo 'Setting up Jenkins home directory permissions...' && chown -R 1000:1000 /var/jenkins_home",
-        ]
-      volumeMounts:
-        - name: jenkins_home
-          mountPath: /var/jenkins_home
+  customInitContainers: []
+  # - name: custom-init
+  #   image: "alpine:3"
+  #   imagePullPolicy: Always
+  #   command: [ "uname", "-a" ]
 
   sidecars:
     configAutoReload:
