@@ -52,7 +52,7 @@ kubectl create namespace jenkins
 
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
-kubectl create -f yml_configs/pvc.yml
+kubectl apply -f yml_configs/pvc.yml
 
 echo "Wait until PVC is bound..."
 while true; do
