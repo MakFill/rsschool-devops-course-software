@@ -14,7 +14,7 @@ curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --disable tra
 # Wait for k3s to start
 echo "Waiting for k3s to start..."
 for i in {1..30}; do
-    if sudo systemctl is-active --quiet k3s; then
+    if kubectl get nodes &> /dev/null; then
         echo "k3s is up and running!"
         break
     fi
