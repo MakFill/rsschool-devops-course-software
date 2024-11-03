@@ -61,9 +61,13 @@ while true; do
     state=$(echo $status | jq -r '.state')
     echo "Init Container: $name, Status: $state"
 
-    if [[ "$state" == "terminated" ]]; then
-        echo "Init Container: $name has failed with exit code $exit_code. Fetching logs..."
-        kubectl logs $POD_NAME -n jenkins -c $name
+    terminated_state=$(echo $status | jq -r '.terminated')
+    if [[ "$terminated_state" != "null" ]]; then
+        exit_code=$(echo $terminated_state | jq -r '.exitCode')
+        if [[ "$exit_code" -ne 0 ]]; then
+          echo "Init Container: $name has failed with exit code $exit_code. Fetching logs..."
+          kubectl logs $POD_NAME -n jenkins -c $name
+        fi
     fi
   done
   sleep 5  
