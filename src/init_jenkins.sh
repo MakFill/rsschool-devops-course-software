@@ -60,6 +60,7 @@ while true; do
     name=$(echo $status | jq -r '.name')
     state=$(echo $status | jq -r '.state')
     echo "Init Container: $name, Status: $state"
+  done
   sleep 5  
 done
 
