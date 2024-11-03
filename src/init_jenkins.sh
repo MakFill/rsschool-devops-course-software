@@ -15,6 +15,7 @@ kubectl create namespace jenkins
 echo "Creating a Persistent Volume..."
 kubectl apply -f yml_configs/jenkins_volume.yml
 
+sudo mkdir -p /data/jenkins-volume/
 sudo chown -R 1000:1000 /data/jenkins-volume/
 
 kubectl get pv
