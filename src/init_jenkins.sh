@@ -11,13 +11,8 @@ echo "Add the Jenkins repo"
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
 
-# Create a persistent volume for the Jenkins controller pod
-kubectl apply -f yml_configs/jenkins_volume.yml
-
 # Create a service account
 kubectl apply -f yml_configs/jenkins_sa.yml
-
-kubectl wait --for=condition=Bound pvc/jenkins-pv -n jenkins --timeout=60s
 
 echo "Describe pod - $(kubectl get pods -n jenkins --show-labels)"
 

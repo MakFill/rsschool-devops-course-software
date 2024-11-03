@@ -47,5 +47,28 @@ if ! kubectl get nodes &> /dev/null; then
     exit 1
 fi
 
+# Create a Persistent Volume Claim (PVC)
+echo "Creating a Persistent Volume Claim..."
+kubectl create -f volume_config/pvc.yml
+
+echo "Wait until PVC is bound..."
+while true; do
+    PVC_STATUS=$(kubectl get pvc jenkins-pvc -n default -o jsonpath='{.status.phase}')
+    echo "PVC status: $PVC_STATUS"
+    if [ "$PVC_STATUS" == "Bound" ]; then    
+        echo "PVC is bound."
+    break
+    elif [ "$PVC_STATUS" == "Pending" ]; then
+        echo "PVC is still pending, waiting..."
+        sleep 5
+    else 
+        echo "PVC is in an unexpected state: $PVC_STATUS"
+        exit 1
+    fi
+done
+
 echo "Cluster Information:"
 kubectl get nodes
+kubectl get pv
+kubectl get pvc
+kubectl get storageclass
