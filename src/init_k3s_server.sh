@@ -47,8 +47,8 @@ if ! kubectl get nodes &> /dev/null; then
     exit 1
 fi
 
-echo "Apply the longhorn.yaml to install Longhorn:"
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+# echo "Apply the longhorn.yaml to install Longhorn:"
+# kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
 
 
 echo "Cluster Information:"
