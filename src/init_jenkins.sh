@@ -20,7 +20,7 @@ kubectl apply -f yml_configs/jenkins_sa.yml
 # Install Jenkins
 echo "Install Jenkins"
 chart=jenkinsci/jenkins
-helm install jenkins -n jenkins -f jenkins_values.yml $chart
+helm install jenkins -n jenkins -f yml_configs/jenkins_values.yml $chart
 
 jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
