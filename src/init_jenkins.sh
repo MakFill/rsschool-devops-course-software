@@ -11,31 +11,27 @@ helm repo update
 # Create a Namespace for the Jenkins.
 kubectl create namespace jenkins
 
-# Apply the longhorn.yaml to install Longhorn:
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+# Create a Persistent Volume (PV)
+echo "Creating a Persistent Volume..."
+kubectl apply -f yml_configs/jenkins_volume.yml
 
-# Create a Persistent Volume Claim (PVC)
-echo "Creating a Persistent Volume Claim..."
-kubectl apply -f yml_configs/pvc.yml
-
-echo "Wait until PVC is bound..."
+echo "Wait until PV is bound..."
 while true; do
-    PVC_STATUS=$(kubectl get pvc jenkins-pvc -n jenkins -o jsonpath='{.status.phase}')
-    echo "PVC status: $PVC_STATUS"
-    if [ "$PVC_STATUS" == "Bound" ]; then    
+    PV_STATUS=$(kubectl get pv jenkins-pv -n jenkins -o jsonpath='{.status.phase}')
+    echo "PV status: $PV_STATUS"
+    if [ "$PV_STATUS" == "Bound" ]; then    
         echo "PVC is bound."
     break
-    elif [ "$PVC_STATUS" == "Pending" ]; then
+    elif [ "$PV_STATUS" == "Pending" ]; then
         echo "PVC is still pending, waiting..."
         sleep 5
     else 
-        echo "PVC is in an unexpected state: $PVC_STATUS"
+        echo "PVC is in an unexpected state: $PV_STATUS"
         exit 1
     fi
 done
 
 kubectl get pv
-kubectl get pvc
 kubectl get storageclass
 
 # Create a service account
