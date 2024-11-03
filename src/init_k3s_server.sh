@@ -50,34 +50,6 @@ fi
 echo "Apply the longhorn.yaml to install Longhorn:"
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
 
-# # Create a Persistent Volume Claim (PVC)
-# echo "Creating a Persistent Volume Claim..."
-# kubectl create -f yml_configs/pvc.yml
 
-# echo "Wait until PVC is bound..."
-# while true; do
-#     PVC_STATUS=$(kubectl get pvc longhorn-volv-pvc -n default -o jsonpath='{.status.phase}')
-#     echo "PVC status: $PVC_STATUS"
-#     if [ "$PVC_STATUS" == "Bound" ]; then    
-#         echo "PVC is bound."
-#     break
-#     elif [ "$PVC_STATUS" == "Pending" ]; then
-#         echo "PVC is still pending, waiting..."
-#         sleep 5
-#     else 
-#         echo "PVC is in an unexpected state: $PVC_STATUS"
-#         exit 1
-#     fi
-# done
-
-
-# # Create a pod
-# echo "Creating a pod..."
-# kubectl create -f yml_configs/pod.yml
-
-# Show k3s cluster information
 echo "Cluster Information:"
 kubectl get nodes
-# kubectl get pv
-# kubectl get pvc
-# kubectl get storageclass

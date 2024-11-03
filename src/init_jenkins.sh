@@ -24,4 +24,9 @@ helm install jenkins -n jenkins -f yml_configs/jenkins_values.yml $chart
 
 jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
-echo $(echo $secret | base64 --decode)
+echo "Admin user password: $(echo $secret | base64 --decode)"
+
+echo "Get pods: $(kubectl get pods)"
+
+# Set up port forwarding
+kubectl -n jenkins port-forward $(kubectl get pods -n jenkins) 8080:8080
