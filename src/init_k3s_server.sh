@@ -1,5 +1,6 @@
 #!/bin/bash
 
+ssh-keyscan -H "$SERVER_INSTANCE_IP" >> ~/.ssh/known_hosts
 ssh -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
 
 # Disable swap (required by Kubernetes)
@@ -27,9 +28,6 @@ if ! sudo systemctl is-active --quiet k3s; then
     echo "k3s failed to start. Exiting..."
     exit 1
 fi
-
-# Apply the longhorn.yaml to install Longhorn
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
 
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
