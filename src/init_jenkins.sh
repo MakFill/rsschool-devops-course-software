@@ -61,7 +61,7 @@ while true; do
     state=$(echo $status | jq -r '.state')
     echo "Init Container: $name, Status: $state"
 
-    terminated_state=$(echo $status | jq -r '.terminated')
+    terminated_state=$(echo $state | jq -r '.terminated')
     if [[ "$terminated_state" != "null" ]]; then
         exit_code=$(echo $terminated_state | jq -r '.exitCode')
         if [[ "$exit_code" -ne 0 ]]; then
