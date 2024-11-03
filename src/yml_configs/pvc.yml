@@ -9,4 +9,4 @@ spec:
   storageClassName: jenkins-pvc
   resources:
     requests:
-      storage: 8Gi
+      storage: 2Gi
