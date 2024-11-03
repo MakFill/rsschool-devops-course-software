@@ -4,9 +4,6 @@ ssh -o StrictHostKeyChecking=no -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP
 
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-# Create a Namespace for the Jenkins.
-kubectl create namespace jenkins
-
 echo "Add the Jenkins repo"
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update

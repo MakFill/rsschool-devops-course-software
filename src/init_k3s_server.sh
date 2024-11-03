@@ -47,6 +47,9 @@ if ! kubectl get nodes &> /dev/null; then
     exit 1
 fi
 
+# Create a Namespace for the Jenkins.
+kubectl create namespace jenkins
+
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
 kubectl create -f yml_configs/pvc.yml
