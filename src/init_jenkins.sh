@@ -69,6 +69,3 @@ done
 
 echo "PODS $(kubectl get pods -n jenkins)"
 echo "SERVICES $(kubectl get services -n jenkins)"
-
-# Set up port forwarding
-kubectl -n jenkins port-forward svc/jenkins 8080:8080

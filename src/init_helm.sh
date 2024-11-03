@@ -26,15 +26,15 @@ if ! helm version; then
     exit 1
 fi
 
-# # Add the Bitnami Helm repository
-# helm repo add bitnami https://charts.bitnami.com/bitnami
-# helm repo update
+# Add the Bitnami Helm repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 
-# # Install Bitnami chart
-# helm install my-release bitnami/nginx
+# Install Bitnami chart
+helm install my-release bitnami/nginx
 
-# # Check Bitnami chart status
-# helm status my-release
+# Check Bitnami chart status
+helm status my-release
 
-# # Uninstall Bitnami chart
-# helm uninstall my-release
+# Uninstall Bitnami chart
+helm uninstall my-release
