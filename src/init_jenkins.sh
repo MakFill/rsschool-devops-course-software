@@ -26,25 +26,27 @@ jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
 echo "Admin user password: $(echo $secret | base64 --decode)"
 
+sleep 10
+
 echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
 echo "Nodes - $(kubectl get nodes)"
-echo "Describe nodes - $(kubectl describe nodes)"
-echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
+# echo "Describe nodes - $(kubectl describe nodes)"
+# echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
 
-# Wait for Jenkins pod to be in Running status
-echo "Waiting for Jenkins pod to be in Running status..."
-while true; do
-  POD_NAME=$(kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-controller -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-  POD_STATUS=$(kubectl get pod "$POD_NAME" -n jenkins -o jsonpath='{.status.phase}' 2>/dev/null)
+# # Wait for Jenkins pod to be in Running status
+# echo "Waiting for Jenkins pod to be in Running status..."
+# while true; do
+#   POD_NAME=$(kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-controller -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+#   POD_STATUS=$(kubectl get pod "$POD_NAME" -n jenkins -o jsonpath='{.status.phase}' 2>/dev/null)
 
-  if [[ "$POD_STATUS" == "Running" ]]; then
-    echo "Jenkins pod is now running: $POD_NAME"
-    break
-  fi
+#   if [[ "$POD_STATUS" == "Running" ]]; then
+#     echo "Jenkins pod is now running: $POD_NAME"
+#     break
+#   fi
   
-  echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
-  sleep 5  
-done
+#   echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
+#   sleep 5  
+# done
 
-# Set up port forwarding
-kubectl -n jenkins port-forward pod/$POD_NAME 8080:8080
+# # Set up port forwarding
+# kubectl -n jenkins port-forward pod/$POD_NAME 8080:8080
