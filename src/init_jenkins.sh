@@ -54,6 +54,12 @@ while true; do
   
   echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
   echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
+  INIT_CONTAINER_STATUS=$(kubectl get pod $POD_NAME -n jenkins -o jsonpath='{.status.initContainerStatuses[*]}')
+
+  for status in $INIT_CONTAINER_STATUS; do
+    name=$(echo $status | jq -r '.name')
+    state=$(echo $status | jq -r '.state')
+    echo "Init Container: $name, Status: $state"
   sleep 5  
 done
 
