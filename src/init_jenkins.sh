@@ -68,4 +68,4 @@ while true; do
 done
 
 # Set up port forwarding
-kubectl -n jenkins port-forward pod/$POD_NAME 8080:8080
+kubectl -n jenkins port-forward $POD_NAME 8080:8080
