@@ -28,6 +28,9 @@ echo "Admin user password: $(echo $secret | base64 --decode)"
 
 echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
 echo "Nodes - $(kubectl get nodes)"
+echo "Describe nodes - $(kubectl describe nodes)"
+echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
+
 # Wait for Jenkins pod to be in Running status
 echo "Waiting for Jenkins pod to be in Running status..."
 while true; do
@@ -40,7 +43,6 @@ while true; do
   fi
   
   echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
-  echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
   sleep 5  
 done
 
