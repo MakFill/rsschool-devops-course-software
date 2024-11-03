@@ -15,6 +15,8 @@ kubectl create namespace jenkins
 echo "Creating a Persistent Volume..."
 kubectl apply -f yml_configs/jenkins_volume.yml
 
+sudo chown -R 1000:1000 /data/jenkins-volume/
+
 kubectl get pv
 kubectl get storageclass
 
@@ -27,20 +29,10 @@ echo "Install Jenkins"
 chart=jenkinsci/jenkins
 helm install jenkins -n jenkins -f yml_configs/jenkins_values.yml $chart
 
-echo "Check pods after deploy $(kubectl get pods -n jenkins)"
 
 jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
 echo "Admin user password: $(echo $secret | base64 --decode)"
-
-# sleep 10
-
-# echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
-# echo "Nodes - $(kubectl get nodes)"
-# # echo "Describe nodes - $(kubectl describe nodes)"
-# POD_NAME=$(kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-controller -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-# echo "pod name - $POD_NAME"
-# echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
 
 # Wait for Jenkins pod to be in Running status
 echo "Waiting for Jenkins pod to be in Running status..."
