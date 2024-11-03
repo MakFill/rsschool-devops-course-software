@@ -21,7 +21,6 @@ kubectl get storageclass
 # Create a service account
 kubectl apply -f yml_configs/jenkins_sa.yml
 
-echo "Describe pod - $(kubectl get pods -n jenkins --show-labels)"
 
 # Install Jenkins
 echo "Install Jenkins"
