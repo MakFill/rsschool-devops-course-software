@@ -17,6 +17,10 @@ kubectl apply -f yml_configs/jenkins_volume.yml
 # Create a service account
 kubectl apply -f yml_configs/jenkins_sa.yml
 
+kubectl wait --for=condition=Bound pvc/jenkins-pv -n jenkins --timeout=60s
+
+echo "Describe pod - $(kubectl get pods -n jenkins --show-labels)"
+
 # Install Jenkins
 echo "Install Jenkins"
 chart=jenkinsci/jenkins
