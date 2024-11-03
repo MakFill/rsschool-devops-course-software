@@ -30,15 +30,15 @@ echo "Admin user password: $(echo $secret | base64 --decode)"
 echo "Waiting for Jenkins pod to be in Running status..."
 while true; do
   POD_NAME=$(kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-controller -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-  POD_STATUS=$(kubectl get pod "$POD_NAME" -n $NAMESPACE -o jsonpath='{.status.phase}' 2>/dev/null)
+  POD_STATUS=$(kubectl get pod "$POD_NAME" -n jenkins -o jsonpath='{.status.phase}' 2>/dev/null)
 
   if [[ "$POD_STATUS" == "Running" ]]; then
     echo "Jenkins pod is now running: $POD_NAME"
     break
   fi
   
-  echo "Waiting for pod to start..."
-  sleep 5  # Adjust the sleep interval as needed
+  echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
+  sleep 5  
 done
 
 # Set up port forwarding
