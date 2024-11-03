@@ -27,6 +27,8 @@ echo "Install Jenkins"
 chart=jenkinsci/jenkins
 helm install jenkins -n jenkins -f yml_configs/jenkins_values.yml $chart
 
+echo "Check pods after deploy $(kubectl get pods -n jenkins)"
+
 jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
 echo "Admin user password: $(echo $secret | base64 --decode)"
