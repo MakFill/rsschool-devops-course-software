@@ -13,7 +13,6 @@ permissions:
   contents: read
 
 env:
-  AWS_ARN: ${{ secrets.AWS_ARN }}
   EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
   SERVER_INSTANCE_IP: ${{ github.event.inputs.server_instance_ip }}
 

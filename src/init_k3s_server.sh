@@ -30,6 +30,9 @@ if ! sudo systemctl is-active --quiet k3s; then
     exit 1
 fi
 
+# Apply the longhorn.yaml to install Longhorn
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+
 # Create a Persistent Volume Claim (PVC)
 echo "Creating a Persistent Volume Claim..."
 kubectl create -f volume_config/pvc.yml
