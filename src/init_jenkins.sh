@@ -39,6 +39,7 @@ while true; do
   fi
   
   echo "Waiting for pod ($POD_NAME - $POD_STATUS) to start..."
+  echo "PVC - $(kubectl get pvc -n jenkins)"
   sleep 5  
 done
 
