@@ -26,6 +26,7 @@ jsonpath="{.data.jenkins-admin-password}"
 secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
 echo "Admin user password: $(echo $secret | base64 --decode)"
 
+echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
 # Wait for Jenkins pod to be in Running status
 echo "Waiting for Jenkins pod to be in Running status..."
 while true; do
