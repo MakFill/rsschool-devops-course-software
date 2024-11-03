@@ -32,7 +32,8 @@ echo "Labels - $(kubectl get pods -n jenkins --show-labels)"
 echo "Nodes - $(kubectl get nodes)"
 # echo "Describe nodes - $(kubectl describe nodes)"
 POD_NAME=$(kubectl get pods -n jenkins -l app.kubernetes.io/component=jenkins-controller -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-echo "pod - $(kubectl describe pod $POD_NAME)"
+echo "pod name - $POD_NAME"
+echo "pod - $(kubectl describe pod $POD_NAME -n jenkins)"
 
 # # Wait for Jenkins pod to be in Running status
 # echo "Waiting for Jenkins pod to be in Running status..."
