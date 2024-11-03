@@ -28,6 +28,7 @@ if ! systemctl is-active --quiet k3s; then
     exit 1
 fi
 
+sudo chmod 600 /etc/rancher/k3s/k3s.yaml
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 # Check if k3s server is ready
