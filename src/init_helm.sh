@@ -31,7 +31,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 # Install Bitnami chart
-helm install my-release oci://registry-1.docker.i/bitnamicharts/nginx
+helm install my-release bitnami/nginx
 
 # Check Bitnami chart status
 helm status my-release
