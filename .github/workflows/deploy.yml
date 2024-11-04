@@ -1,0 +1,67 @@
+name: CI Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      server_instance_ip:
+        description: 'IP address of the k3s server EC2 instance'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  SERVER_INSTANCE_IP: ${{ github.event.inputs.server_instance_ip }}
+
+jobs:
+  init:
+    name: Init
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: src
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create SSH key file
+        run: echo "${{ env.EC2_SSH_KEY }}" > ec2-key.pem
+
+      - name: Set SSH key permissions
+        run: chmod 600 ec2-key.pem
+
+      - name: Init k3s server
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the k3s server setup script to EC2
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_k3s_server.sh ec2-user@$SERVER_INSTANCE_IP:~/
+
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_k3s_server.sh && ~/init_k3s_server.sh"
+
+      - name: Install Helm and verify installation
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the Helm setup script to EC2
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_helm.sh ec2-user@$SERVER_INSTANCE_IP:~/
+
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_helm.sh && ~/init_helm.sh"
+
+      - name: Install Jenkins
+        env:
+          SSH_KEY_PATH: ec2-key.pem
+          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the Jenkins setup script and yml_configs folder to EC2
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_jenkins.sh ec2-user@$SERVER_INSTANCE_IP:~/
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH -r ./yml_configs ec2-user@$SERVER_INSTANCE_IP:~/
+
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_jenkins.sh && ~/init_jenkins.sh"
