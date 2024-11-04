@@ -205,7 +205,7 @@ controller:
     supplementalGroups: [1000]
     fsGroup: 1000
     fsGroupChangePolicy: "OnRootMismatch"
-    
+
   #   capabilities: {}
   # -- Completely overwrites the contents of the pod security context, ignoring the values provided for `runAsUser`, `fsGroup`, and `securityContextCapabilities`
   podSecurityContextOverride: ~
@@ -220,7 +220,7 @@ controller:
   # For minikube, set this to NodePort, elsewhere uses LoadBalancer
   # Use ClusterIP if your setup includes ingress controller
   # -- k8s service type
-  serviceType: ClusterIP
+  serviceType: NodePort
 
   # -- k8s service clusterIP. Only used if serviceType is ClusterIP
   clusterIp:
@@ -229,7 +229,7 @@ controller:
   # -- k8s target port
   targetPort: 8080
   # -- k8s node port. Only used if serviceType is NodePort
-  nodePort:
+  nodePort: 30080
 
   # Use Local to preserve the client source IP and avoids a second hop for LoadBalancer and NodePort type services,
   # but risks potentially imbalanced traffic spreading.
@@ -356,7 +356,7 @@ controller:
   # this will be an external load balancer and allowing inbound 0.0.0.0/0, a HUGE
   # security risk: https://github.com/kubernetes/charts/issues/1341
   # -- Defines how to expose the agentListener service
-  agentListenerServiceType: 'ClusterIP'
+  agentListenerServiceType: 'NodePort'
 
   # -- Annotations for the agentListener service
   agentListenerServiceAnnotations: {}

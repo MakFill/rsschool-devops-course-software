@@ -5,7 +5,7 @@ echo "Disabling swap..."
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
-# Install k3s with Local Path Provisioner for Persistent Volumes
+# Install k3s
 echo "Installing k3s..."
 curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --disable traefik
 
