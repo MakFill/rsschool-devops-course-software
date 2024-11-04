@@ -40,19 +40,27 @@ jobs:
           SSH_KEY_PATH: ec2-key.pem
           SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
         run: |
-          # Upload the setup script to EC2
+          # Upload the k3s server setup script to EC2
           scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_k3s_server.sh ec2-user@$SERVER_INSTANCE_IP:~/
 
           ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_k3s_server.sh && ~/init_k3s_server.sh"
 
       - name: Install Helm and verify installation
-        run: chmod +x ./init_helm.sh && ./init_helm.sh
         env:
           SSH_KEY_PATH: ec2-key.pem
           SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the Helm setup script to EC2
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_helm.sh ec2-user@$SERVER_INSTANCE_IP:~/
+
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_helm.sh && ~/init_helm.sh"
 
       - name: Install Jenkins
-        run: chmod +x ./init_jenkins.sh && ./init_jenkins.sh
         env:
           SSH_KEY_PATH: ec2-key.pem
           SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the Jenkins setup script to EC2
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_jenkins.sh ec2-user@$SERVER_INSTANCE_IP:~/
+
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP "chmod +x ~/init_jenkins.sh && ~/init_jenkins.sh"
