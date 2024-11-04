@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ssh -o StrictHostKeyChecking=no -i "$SSH_KEY_PATH" ec2-user@"$SERVER_INSTANCE_IP"
-
 # Disable swap (required by Kubernetes)
 echo "Disabling swap..."
 sudo swapoff -a

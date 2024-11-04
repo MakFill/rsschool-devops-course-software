@@ -36,10 +36,11 @@ jobs:
         run: chmod 600 ec2-key.pem
 
       - name: Init k3s server
-        run: chmod +x ./init_k3s_server.sh && ./init_k3s_server.sh
-        env:
-          SSH_KEY_PATH: ec2-key.pem
-          SERVER_INSTANCE_IP: ${{ env.SERVER_INSTANCE_IP }}
+        run: |
+          # Upload the setup script to EC@
+          scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ./init_k3s_server.sh ec2-user@$SERVER_INSTANCE_IP:~/
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$SERVER_INSTANCE_IP
+          "chmod +x ~/init_k3s_server.sh && ~/init_k3s_server.sh"
 
       - name: Install Helm and verify installation
         run: chmod +x ./init_helm.sh && ./init_helm.sh
